@@ -24,11 +24,11 @@ export const posters: Poster[] = [
     image: '/poster1.png',
     textPosition: 'right',
     theme: {
-      bg: '#8B3A1A',
-      accent: '#D4A853',
-      accentSecondary: '#F4D03F',
-      text: '#FAE5D3',
-      muted: '#D4A574'
+      bg: '#2A1A0F',
+      accent: '#D4854A',
+      accentSecondary: '#E8C9A8',
+      text: '#F5E6D3',
+      muted: '#A08060'
     },
     labels: { season: 'AUTUMN / WINTER', year: '2026' },
     typography: {
@@ -71,6 +71,23 @@ export const posters: Poster[] = [
       title: 'NOCTURNE',
       subtitle: 'Crystal Blue',
       description: 'Silence speaks in azure tones'
+    }
+  },
+  {
+    id: 'epilogue',
+    type: 'text',
+    theme: {
+      bg: '#0D0D0F',
+      accent: '#C4C0BC',
+      accentSecondary: '#8B8B8D',
+      text: '#E8E8EA',
+      muted: '#4A4A4C'
+    },
+    typography: {
+      brand: 'END',
+      collection: 'Fin',
+      year: 'MMXXVI',
+      subtitle: 'Epilogue'
     }
   }
 ];

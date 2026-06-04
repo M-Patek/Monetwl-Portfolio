@@ -16,7 +16,7 @@ export function PosterPage({ poster, index, isVisible, parallaxOffset }: Props) 
     : `linear-gradient(to left,${theme.bg}f0 0%,${theme.bg}a0 30%,${theme.bg}40 50%,transparent 70%)`;
 
   return (
-    <section data-index={index} className={`poster-section is-visible`}>
+    <section data-index={index} className={`poster-section is-visible poster-${textPosition}`}>
       <div
         className="parallax-bg"
         style={{
@@ -25,6 +25,28 @@ export function PosterPage({ poster, index, isVisible, parallaxOffset }: Props) 
         }}
       />
       <div className="section-overlay" style={{ background: overlayGradient }} />
+      <div
+        className="text-blur-mask"
+        data-position={textPosition}
+        style={{
+          position: 'absolute',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          [textPosition === 'left' ? 'left' : 'right']: '0',
+          width: '45vw',
+          height: '70vh',
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
+          maskImage: textPosition === 'left'
+            ? 'linear-gradient(to right, black 30%, transparent 100%)'
+            : 'linear-gradient(to left, black 30%, transparent 100%)',
+          WebkitMaskImage: textPosition === 'left'
+            ? 'linear-gradient(to right, black 30%, transparent 100%)'
+            : 'linear-gradient(to left, black 30%, transparent 100%)',
+          pointerEvents: 'none',
+          zIndex: 5
+        }}
+      />
       <div className="grain-overlay" />
       <div className={`content-layer ${textPosition}`}>
         <RevealText delay={0} isVisible={isVisible} className="season-label">

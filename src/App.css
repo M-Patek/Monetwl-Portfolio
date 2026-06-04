@@ -112,12 +112,13 @@ body {
   align-items: center;
 }
 
-/* 视差背景层 */
+/* 视差背景层 - 保持原比例完整显示 */
 .parallax-bg {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center;
+  background-size: 100% auto;
+  background-position: center center;
+  background-repeat: no-repeat;
   will-change: transform;
   filter: contrast(1.05) saturate(1.02);
 }
@@ -194,16 +195,11 @@ body {
 }
 
 /* ============================================
-   PROLOGUE 序页 - 开场极简设计
+   PROLOGUE 序页 - 杂志封面极简设计
    ============================================ */
 
 .prologue {
-  background: linear-gradient(
-    to bottom,
-    #0a0a0c 0%,
-    #121214 40%,
-    #1a1a1f 100%
-  );
+  background: #F5F2EE;
 }
 
 .prologue-gradient {
@@ -211,9 +207,9 @@ body {
   inset: 0;
   background:
     radial-gradient(
-      ellipse at center 40%,
-      rgba(212, 168, 83, 0.06) 0%,
-      transparent 50%
+      ellipse at center 45%,
+      rgba(245, 242, 238, 0) 0%,
+      rgba(232, 228, 222, 0.5) 100%
     );
   pointer-events: none;
 }
@@ -232,133 +228,213 @@ body {
 
 .prologue-pretitle {
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 400;
-  letter-spacing: 0.5em;
+  letter-spacing: 0.6em;
   text-transform: uppercase;
-  color: #6a6a6d;
+  color: #8a8682;
   order: -1;
 }
 
 .prologue-brand {
   font-family: var(--font-serif);
-  font-size: clamp(3.5rem, 10vw, 7rem);
+  font-size: clamp(4rem, 12vw, 9rem);
   font-weight: 400;
-  line-height: 0.95;
+  line-height: 0.9;
   letter-spacing: -0.02em;
   text-transform: uppercase;
   margin: 0;
-  background: linear-gradient(
-    180deg,
-    #ffffff 0%,
-    #D4A853 35%,
-    #5D8AA8 70%,
-    #1a2f4a 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #1a1a1a;
 }
 
 .prologue-collection {
   font-family: var(--font-serif);
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 300;
   font-style: italic;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #808085;
+  color: #5a5652;
+  margin-top: 0.5rem;
 }
 
 .prologue-line {
-  width: 40px;
+  width: 60px;
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(212, 168, 83, 0.6) 50%,
-    transparent
-  );
-  margin: 0.5rem 0;
+  background: #1a1a1a;
+  margin: 1.5rem 0;
+  opacity: 0.8;
 }
 
 .prologue-year {
   font-family: var(--font-sans);
   font-size: 0.75rem;
-  font-weight: 300;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  color: #B8956B;
+}
+
+/* 序页滚动指示 */
+.prologue-scroll {
+  position: absolute;
+  bottom: 6vh;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-sans);
+  font-size: 0.55rem;
+  font-weight: 400;
   letter-spacing: 0.25em;
-  color: #5a5a5d;
+  text-transform: uppercase;
+  color: #9a9590;
+  z-index: 20;
+}
+
+.prologue-scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(
+    to bottom,
+    #1a1a1a,
+    transparent
+  );
+  animation: scroll-pulse 2s ease-in-out infinite;
+}
+
+@keyframes scroll-pulse {
+  0%, 100% { opacity: 0.4; transform: scaleY(1); }
+  50% { opacity: 1; transform: scaleY(1.2); }
+}
+
+/* 序页四角 - 深灰色 */
+.prologue .corner {
+  color: #5a5652;
+  opacity: 0.6;
 }
 
 /* ============================================
-   INTERLUDE 过渡页 - 强化刚度
+   INTERLUDE 过渡页 - 最简留白：昼与夜的呼吸
    ============================================ */
 
 .interlude {
+  background: #1A1A1D;
+}
+
+/* 极微弱的环境光晕 - 仅在边缘 */
+.interlude::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 25vh;
   background: linear-gradient(
     to bottom,
-    rgba(139, 58, 26, 0.12) 0%,
-    #161619 20%,
-    #1A1A1D 50%,
-    #161619 80%,
-    rgba(13, 27, 42, 0.15) 100%
+    rgba(212, 168, 83, 0.025) 0%,
+    transparent 100%
   );
+  pointer-events: none;
+}
+
+.interlude::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 25vh;
+  background: linear-gradient(
+    to top,
+    rgba(93, 138, 168, 0.025) 0%,
+    transparent 100%
+  );
+  pointer-events: none;
 }
 
 .interlude-gradient {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(212, 168, 83, 0.1) 0%,
-      transparent 15%
-    ),
-    radial-gradient(
-      ellipse at center,
-      rgba(201, 169, 97, 0.08) 0%,
-      rgba(139, 154, 173, 0.05) 40%,
-      transparent 70%
-    ),
-    linear-gradient(
-      to top,
-      rgba(93, 138, 168, 0.1) 0%,
-      transparent 15%
-    );
   pointer-events: none;
+}
+
+/* 过渡页内容 - 紧凑居中，浮在分界线 */
+.interlude .content-layer.center {
+  justify-content: center;
+  align-items: center;
+  padding: 0;
 }
 
 .interlude-content {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+  text-align: center;
+}
+
+/* 段落组 - 上下对称 */
+.interlude-stanza {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 0.8rem;
 }
 
-.interlude-pretitle {
-  font-family: var(--font-sans);
-  font-size: 0.7rem;
-  font-weight: 400;
-  letter-spacing: 0.6em;
-  text-transform: uppercase;
-  color: #707075;
-  margin-bottom: 0.5rem;
+.interlude-stanza:first-child {
+  margin-bottom: 1rem;
 }
 
+.interlude-stanza:last-child {
+  margin-top: 1rem;
+}
+
+.interlude-label {
+  font-family: var(--font-sans);
+  font-size: 0.55rem;
+  font-weight: 400;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: #6a6a6d;
+}
+
+.interlude-label.light {
+  color: #A08060;
+}
+
+.interlude-label.dark {
+  color: #6080A0;
+}
+
+.interlude-divider {
+  width: 30px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(180, 160, 140, 0.5) 50%,
+    transparent
+  );
+  margin: 0;
+}
+
+/* 主标题 - 银白渐变，更大气 */
 .interlude-title {
   font-family: var(--font-serif);
-  font-size: clamp(3.5rem, 10vw, 8rem);
-  font-weight: 300;
-  line-height: 0.9;
+  font-size: clamp(3rem, 10vw, 6rem);
+  font-weight: 200;
+  line-height: 0.95;
   letter-spacing: -0.02em;
   text-transform: uppercase;
   margin: 0;
   background: linear-gradient(
     180deg,
-    #E8E6E1 0%,
-    #D4A853 35%,
-    #8B9AAD 65%,
-    #5D8AA8 100%
+    #F5F2EE 0%,
+    #C4C0BC 50%,
+    #9A9896 100%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -366,42 +442,266 @@ body {
 }
 
 .interlude-title.line2 {
-  font-style: italic;
+  font-size: clamp(2.5rem, 7vw, 5rem);
   font-weight: 200;
+  font-style: italic;
+  letter-spacing: 0.02em;
   background: linear-gradient(
-    180deg,
-    #5D8AA8 0%,
-    #A8B8C8 50%,
-    #E8F0F8 100%
+    135deg,
+    rgba(212, 168, 83, 0.95) 0%,
+    rgba(201, 169, 97, 0.85) 25%,
+    rgba(180, 160, 120, 0.75) 50%,
+    rgba(139, 154, 173, 0.85) 75%,
+    rgba(93, 138, 168, 0.95) 100%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  filter: drop-shadow(0 0 30px rgba(180, 150, 120, 0.15));
+  animation: text-breathe 6s ease-in-out infinite;
 }
 
-.interlude-line {
-  width: 100px;
-  height: 2px;
+@keyframes text-breathe {
+  0%, 100% {
+    opacity: 0.85;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes text-breathe {
+  0%, 100% {
+    opacity: 0.85;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+
+/* ============================================
+   EPILOGUE 尾页 - 显影终章
+   ============================================ */
+
+.epilogue {
+  background: #0D0D0F;
+}
+
+.epilogue-gradient {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(196, 192, 188, 0.02) 0%,
+      transparent 60%
+    );
+  pointer-events: none;
+}
+
+.epilogue .content-layer.center {
+  justify-content: center;
+  align-items: center;
+  gap: 15vh;
+}
+
+/* 中央 END 容器 - 封印式设计 */
+.epilogue-end {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 3.5rem;
+}
+
+/* 外边框 */
+.epilogue-end::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(196, 192, 188, 0.12);
+  pointer-events: none;
+}
+
+/* 内边框 */
+.epilogue-end::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(196, 192, 188, 0.06);
+  pointer-events: none;
+}
+
+/* 竖线装饰 */
+.epilogue-end .vertical-line {
+  position: absolute;
+  width: 1px;
+  height: 30px;
   background: linear-gradient(
-    90deg,
+    to bottom,
     transparent,
-    rgba(212, 168, 83, 0.8) 30%,
-    rgba(93, 138, 168, 0.8) 70%,
+    rgba(196, 192, 188, 0.15) 50%,
     transparent
   );
-  margin: 1.5rem 0;
 }
 
-.interlude-quote {
+.epilogue-end .vertical-line.top {
+  top: -45px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.epilogue-end .vertical-line.bottom {
+  bottom: -45px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.epilogue-end .end-outline {
   font-family: var(--font-serif);
-  font-size: clamp(1rem, 2vw, 1.3rem);
+  font-size: clamp(3.5rem, 12vw, 7rem);
   font-weight: 300;
-  font-style: italic;
-  letter-spacing: 0.03em;
-  color: #808085;
-  max-width: 380px;
-  line-height: 1.9;
-  white-space: pre-line;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(196, 192, 188, 0.3);
+  transition: opacity 1.5s var(--easing-smooth);
+}
+
+.epilogue-end .end-solid {
+  position: absolute;
+  font-family: var(--font-serif);
+  font-size: clamp(3.5rem, 12vw, 7rem);
+  font-weight: 300;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  background: linear-gradient(
+    180deg,
+    #E8E8EA 0%,
+    #C4C0BC 50%,
+    #8B8B8D 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0;
+  transition: opacity 1.5s var(--easing-smooth);
+}
+
+.epilogue-end.revealed .end-outline {
+  opacity: 0;
+}
+
+.epilogue-end.revealed .end-solid {
+  opacity: 1;
+}
+
+/* 底部制作信息 */
+.epilogue-credits {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.epilogue-credits .credit-line {
+  font-family: var(--font-sans);
+  font-size: 0.55rem;
+  font-weight: 400;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: #5A5A5C;
+}
+
+.epilogue-credits .credit-line.small {
+  font-size: 0.45rem;
+  letter-spacing: 0.25em;
+  color: #4A4A4C;
+  margin-top: 1rem;
+}
+
+/* 章节索引导航 */
+.chapter-index {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 8vh;
+  padding: 0 2rem;
+}
+
+.chapter-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: opacity 0.3s ease;
+  opacity: 0.35;
+  position: relative;
+}
+
+.chapter-item:hover {
+  opacity: 0.8;
+}
+
+.chapter-item.active {
+  opacity: 1;
+}
+
+.chapter-label {
+  font-family: var(--font-sans);
+  font-size: 0.5rem;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #C4C0BC;
+  transition: color 0.3s ease;
+}
+
+.chapter-item:hover .chapter-label {
+  color: #E8E8EA;
+}
+
+.chapter-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #4A4A4C;
+  transition: all 0.3s ease;
+}
+
+.chapter-item.active .chapter-dot {
+  background: #C4C0BC;
+  box-shadow: 0 0 8px rgba(196, 192, 188, 0.4);
+}
+
+.chapter-item:hover .chapter-dot {
+  background: #6A6A6C;
+}
+
+/* 章节项之间的分隔线 */
+.chapter-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 1px;
+  background: rgba(74, 74, 76, 0.3);
+}
+
+/* 移除顶部返回暗示 */
+.epilogue-hint {
+  display: none;
 }
 
 /* ============================================
@@ -565,10 +865,35 @@ body {
   left: 6vw;
 }
 
+.corner.top-right {
+  top: 4vh;
+  right: 6vw;
+  text-align: right;
+}
+
+.corner.bottom-left {
+  bottom: 4vh;
+  left: 6vw;
+}
+
 .corner.bottom-right {
   bottom: 4vh;
   right: 6vw;
   text-align: right;
+}
+
+/* 四角标签增强 */
+.corner-label {
+  font-size: 0.5rem;
+  letter-spacing: 0.2em;
+  opacity: 0.6;
+  margin-bottom: 0.2rem;
+}
+
+.corner-value {
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: #8a8a8d;
 }
 
 /* ============================================
@@ -655,11 +980,25 @@ body {
   }
 
   .interlude-title {
-    font-size: clamp(2.5rem, 10vw, 5rem);
+    font-size: clamp(1.8rem, 8vw, 3.5rem);
+  }
+
+  .interlude-title.line2 {
+    font-size: clamp(2rem, 7vw, 3.5rem);
+  }
+
+  .interlude-content {
+    height: 80vh;
+    padding: 8vh 0;
   }
 
   .prologue-brand {
     font-size: clamp(2.5rem, 10vw, 5rem);
+  }
+
+  .prologue .corner {
+    font-size: 0.45rem;
+    letter-spacing: 0.2em;
   }
 }
 
@@ -670,6 +1009,15 @@ body {
   .interlude-title {
     -webkit-text-fill-color: #fff !important;
     filter: none;
+  }
+
+  .prologue {
+    background: #fff;
+  }
+
+  .prologue-brand {
+    color: #000;
+    -webkit-text-fill-color: #000 !important;
   }
 }
 

@@ -13,6 +13,25 @@ export function ProloguePage({ poster, isVisible }: Props) {
     <section data-index={0} className="poster-section prologue is-visible">
       <div className="prologue-gradient" />
       <div className="grain-overlay" />
+
+      {/* 四角编辑信息 */}
+      <div className="corner top-left">
+        <span>Director</span>
+        <span>MONETWL</span>
+      </div>
+      <div className="corner top-right">
+        <span>Photography</span>
+        <span>Editorial</span>
+      </div>
+      <div className="corner bottom-left">
+        <span>Location</span>
+        <span>Shanghai</span>
+      </div>
+      <div className="corner bottom-right">
+        <span>Issue No.</span>
+        <span>001</span>
+      </div>
+
       <div className="content-layer center">
         <div className="prologue-content">
           <RevealText delay={0.1} isVisible={isVisible} className="prologue-pretitle">
@@ -31,6 +50,12 @@ export function ProloguePage({ poster, isVisible }: Props) {
             {typography.year}
           </RevealText>
         </div>
+      </div>
+
+      {/* 滚动指示 */}
+      <div className="prologue-scroll">
+        <span>Scroll</span>
+        <div className="prologue-scroll-line" />
       </div>
     </section>
   );

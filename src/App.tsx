@@ -7,6 +7,7 @@ import { ScrollHint } from './components/layout/ScrollHint';
 import { ProloguePage } from './components/pages/ProloguePage';
 import { PosterPage } from './components/pages/PosterPage';
 import { InterludePage } from './components/pages/InterludePage';
+import { EpiloguePage } from './components/pages/EpiloguePage';
 
 import './App.css';
 
@@ -61,6 +62,13 @@ function App() {
         parallaxOffset={getParallaxOffset(3)}
       />
       <CornerDecoration showIssue issueNumber={2} />
+
+      {/* 尾页 */}
+      <EpiloguePage
+        isVisible={visibleSections.has(4)}
+        isRevealed={progress > 0.85}
+        currentIndex={activeIndex}
+      />
 
       <ScrollHint hidden={progress > 0.05} />
     </div>

@@ -64,7 +64,13 @@ export interface ProloguePoster extends BasePoster {
   typography: PrologueTypography;
 }
 
-export type Poster = ImagePoster | InterludePoster | ProloguePoster;
+export interface EpiloguePoster extends BasePoster {
+  type: 'text';
+  id: 'epilogue';
+  typography: PrologueTypography;
+}
+
+export type Poster = ImagePoster | InterludePoster | ProloguePoster | EpiloguePoster;
 
 // Animation
 export interface RevealAnimationProps {

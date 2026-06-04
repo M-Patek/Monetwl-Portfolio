@@ -6,30 +6,43 @@ interface Props {
   isVisible: boolean;
 }
 
-export function InterludePage({ poster, isVisible }: Props) {
-  const { typography } = poster;
-
+export function InterludePage({ poster: _poster, isVisible }: Props) {
   return (
     <section data-index={2} className="poster-section interlude is-visible">
       <div className="interlude-gradient" />
       <div className="grain-overlay" />
+
       <div className="content-layer center">
         <div className="interlude-content">
-          <RevealText delay={0.1} isVisible={isVisible} className="interlude-pretitle">
-            {typography.pretitle}
-          </RevealText>
-          <RevealText delay={0.2} isVisible={isVisible} className="interlude-title">
-            {typography.title}
-          </RevealText>
-          <RevealText delay={0.3} isVisible={isVisible} className="interlude-title line2">
-            {typography.titleLine2}
-          </RevealText>
-          <RevealText delay={0.4} isVisible={isVisible} className="interlude-line">
-            <div />
-          </RevealText>
-          <RevealText delay={0.5} isVisible={isVisible} className="interlude-quote">
-            {typography.quote}
-          </RevealText>
+          {/* 上部 - The Day Fades */}
+          <div className="interlude-stanza">
+            <RevealText delay={0.1} isVisible={isVisible} className="interlude-label light">
+              The Day Fades
+            </RevealText>
+            <RevealText delay={0.15} isVisible={isVisible} className="interlude-divider">
+              <div />
+            </RevealText>
+          </div>
+
+          {/* 中部 - Between Shadows & Light */}
+          <div className="interlude-stanza center-piece">
+            <RevealText delay={0.3} isVisible={isVisible} className="interlude-title line2">
+              Between Shadows
+            </RevealText>
+            <RevealText delay={0.4} isVisible={isVisible} className="interlude-title line2">
+              & Light
+            </RevealText>
+          </div>
+
+          {/* 下部 - Night Awaits */}
+          <div className="interlude-stanza">
+            <RevealText delay={0.15} isVisible={isVisible} className="interlude-divider">
+              <div />
+            </RevealText>
+            <RevealText delay={0.7} isVisible={isVisible} className="interlude-label dark">
+              Night Awaits
+            </RevealText>
+          </div>
         </div>
       </div>
     </section>
