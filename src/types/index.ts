@@ -1,32 +1,75 @@
-export type Theme = 'light' | 'dark';
-export type Language = 'cn' | 'en';
+// ============================================
+// Core Types for Editorial Portfolio
+// ============================================
 
-export interface Project {
-  title: string;
-  icon: React.ReactNode;
-  tech: string;
-  tag: string;
-}
-
-export interface Chapter {
-  tag: string;
-  title: string;
+export interface Theme {
+  bg: string;
+  accent: string;
+  accentSecondary: string;
   text: string;
-  quote?: string;
-  desc?: string;
-  footer?: string;
+  muted: string;
 }
 
-export interface Content {
+export interface PosterLabels {
+  season: string;
+  year: string;
+}
+
+export interface PosterTypography {
   title: string;
   subtitle: string;
-  windowTitle: string;
-  philosophyTitle: string;
-  practiceTitle: string;
-  resonance: string;
-  bottomQuote: string;
-  chapter1: Chapter;
-  chapter2: Chapter;
-  chapter3: Chapter;
-  projectDesc: string;
+  description: string;
+}
+
+export interface InterludeTypography {
+  pretitle: string;
+  title: string;
+  titleLine2: string;
+  quote: string;
+}
+
+export interface PrologueTypography {
+  brand: string;
+  collection: string;
+  year: string;
+  subtitle: string;
+}
+
+export type PageType = 'image' | 'text';
+export type TextPosition = 'left' | 'right' | 'center';
+
+export interface BasePoster {
+  id: string;
+  type: PageType;
+  theme: Theme;
+}
+
+export interface ImagePoster extends BasePoster {
+  type: 'image';
+  image: string;
+  textPosition: TextPosition;
+  labels: PosterLabels;
+  typography: PosterTypography;
+}
+
+export interface InterludePoster extends BasePoster {
+  type: 'text';
+  id: 'interlude';
+  typography: InterludeTypography;
+}
+
+export interface ProloguePoster extends BasePoster {
+  type: 'text';
+  id: 'prologue';
+  typography: PrologueTypography;
+}
+
+export type Poster = ImagePoster | InterludePoster | ProloguePoster;
+
+// Animation
+export interface RevealAnimationProps {
+  children: React.ReactNode;
+  delay?: number;
+  isVisible: boolean;
+  className?: string;
 }

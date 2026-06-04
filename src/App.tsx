@@ -1,68 +1,70 @@
-import { useEffect, useState, Suspense, useCallback } from 'react';
+import { useScrollProgress, useProgressColor, useDisplayPageIndex } from './hooks/useScrollProgress';
+import { posters } from './data/posters';
+import { ScrollProgress } from './components/layout/ScrollProgress';
+import { PageIndicator } from './components/layout/PageIndicator';
+import { CornerDecoration } from './components/layout/CornerDecoration';
+import { ScrollHint } from './components/layout/ScrollHint';
+import { ProloguePage } from './components/pages/ProloguePage';
+import { PosterPage } from './components/pages/PosterPage';
+import { InterludePage } from './components/pages/InterludePage';
+
 import './App.css';
-import { HeroSection, PhilosophySection, WorkSection, FooterSection } from './sections';
-import { ClaudeCursor } from './components/cursor/ClaudeCursor';
-import { MeshGradient } from './components/effects/MeshGradient';
-import { Header } from './components/ui/Header';
-import { content } from './data/content';
-import { MouseProvider } from './hooks/useMousePosition';
 
-const App = () => {
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
-  const [lang] = useState<'cn' | 'en'>('en');
-  const [activePhilosophy, setActivePhilosophy] = useState(0);
-  const [activeWork, setActiveWork] = useState(0);
+function App() {
+  const { progress, activeIndex, visibleSections, containerRef } = useScrollProgress(posters);
+  const progressColor = useProgressColor(posters, progress);
+  const displayPage = useDisplayPageIndex(activeIndex);
+  const imagePosters = posters.filter(p => p.type === 'image');
 
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
-
-  // 使用 useCallback 稳定函数引用
-  const toggleTheme = useCallback(() => {
-    setTheme(prev => prev === 'light' ? 'dark' : 'light');
-  }, []);
-
-  const t = content[lang];
+  const getParallaxOffset = (index: number) =>
+    (progress - index / posters.length) * 100;
 
   return (
-    <MouseProvider>
-      <div className="page-wrapper">
-        <Header />
-        <MeshGradient theme={theme} />
-        
-        <div className="grid-overlay"></div>
-        {/* 统一桌面体验：始终显示自定义光标 */}
-        <ClaudeCursor />
-        <div className="spotlight-bg"></div>
-        <div className="noise-overlay"></div>
+    <div
+      ref={containerRef}
+      className="parallax-container"
+      style={{ backgroundColor: posters[activeIndex].theme.bg }}
+    >
+      <ScrollProgress progress={progress} color={progressColor} />
+      <PageIndicator
+        current={displayPage}
+        total={imagePosters.length}
+        accentColor={posters[activeIndex].theme.accent}
+      />
 
-        <HeroSection id="hero" t={t} theme={theme} toggleTheme={toggleTheme} />
-        
-        <Suspense fallback={<div style={{ height: '100vh' }} />}>
-          <PhilosophySection 
-            id="philosophy"
-            t={t} 
-            isMobile={false} /* 强制关闭移动端模式 */
-            activePhilosophy={activePhilosophy} 
-            setActivePhilosophy={setActivePhilosophy} 
-          />
-          
-          <WorkSection 
-            id="work"
-            t={t} 
-            lang={lang}
-            theme={theme} 
-            isMobile={false} /* 强制关闭移动端模式 */
-            activeWork={activeWork} 
-            setActiveWork={setActiveWork}
-            toggleTheme={toggleTheme}
-          />
-          
-          <FooterSection id="footer" t={t} />
-        </Suspense>
-      </div>
-    </MouseProvider>
+      {/* 序页 */}
+      <ProloguePage
+        poster={posters[0] as any}
+        isVisible={visibleSections.has(0)}
+      />
+
+      {/* DIURNE 海报页 */}
+      <PosterPage
+        poster={posters[1] as any}
+        index={1}
+        isVisible={visibleSections.has(1)}
+        parallaxOffset={getParallaxOffset(1)}
+      />
+      <CornerDecoration showIssue issueNumber={1} />
+
+      {/* 过渡页 */}
+      <InterludePage
+        poster={posters[2] as any}
+        isVisible={visibleSections.has(2)}
+      />
+
+      {/* NOCTURNE 海报页 */}
+      <PosterPage
+        poster={posters[3] as any}
+        index={3}
+        isVisible={visibleSections.has(3)}
+        parallaxOffset={getParallaxOffset(3)}
+      />
+      <CornerDecoration showIssue issueNumber={2} />
+
+      <ScrollHint hidden={progress > 0.05} />
+    </div>
   );
-};
+}
 
 export default App;
