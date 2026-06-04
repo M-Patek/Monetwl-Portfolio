@@ -63,11 +63,10 @@ function App() {
       />
       <CornerDecoration showIssue issueNumber={2} />
 
-      {/* 尾页 */}
+            {/* 尾页 */}
       <EpiloguePage
         isVisible={visibleSections.has(4)}
         isRevealed={progress > 0.85}
-        currentIndex={activeIndex}
       />
 
       <ScrollHint hidden={progress > 0.05} />

@@ -199,7 +199,7 @@ body {
    ============================================ */
 
 .prologue {
-  background: #F5F2EE;
+  background: #FAF7F2;
 }
 
 .prologue-gradient {
@@ -484,7 +484,7 @@ body {
 }
 
 /* ============================================
-   EPILOGUE 尾页 - 显影终章
+   EPILOGUE 尾页 - 镜像闭合
    ============================================ */
 
 .epilogue {
@@ -506,202 +506,210 @@ body {
 .epilogue .content-layer.center {
   justify-content: center;
   align-items: center;
-  gap: 15vh;
+  gap: 4rem;
 }
 
-/* 中央 END 容器 - 封印式设计 */
-.epilogue-end {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2.5rem 3.5rem;
+/* ============================================
+   EPILOGUE 尾页 - 镜像闭合：从左到右展开
+   ============================================ */
+
+.epilogue {
+  background: #141416;
+  overflow: hidden;
 }
 
-/* 外边框 */
-.epilogue-end::before {
-  content: '';
+.epilogue-gradient {
   position: absolute;
   inset: 0;
-  border: 1px solid rgba(196, 192, 188, 0.12);
+  background:
+    radial-gradient(
+      ellipse 80% 50% at 30% 50%,
+      rgba(212, 168, 83, 0.03) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse 60% 40% at 70% 60%,
+      rgba(93, 138, 168, 0.02) 0%,
+      transparent 50%
+    );
   pointer-events: none;
 }
 
-/* 内边框 */
-.epilogue-end::after {
-  content: '';
+/* 左侧竖条装饰 - 从0展开 */
+.epilogue-accent {
   position: absolute;
-  inset: 6px;
-  border: 1px solid rgba(196, 192, 188, 0.06);
-  pointer-events: none;
-}
-
-/* 竖线装饰 */
-.epilogue-end .vertical-line {
-  position: absolute;
-  width: 1px;
-  height: 30px;
+  left: 6vw;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 0;
   background: linear-gradient(
     to bottom,
-    transparent,
-    rgba(196, 192, 188, 0.15) 50%,
+    rgba(212, 168, 83, 0.4),
+    rgba(196, 192, 188, 0.2),
+    rgba(93, 138, 168, 0.4)
+  );
+  transition: height 1.2s var(--easing-smooth);
+}
+
+.epilogue-accent.revealed {
+  height: 60vh;
+}
+
+/* 内容层 - 左对齐 */
+.epilogue-layer {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 8vh 6vw;
+  padding-left: 12vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 3rem;
+}
+
+/* 主品牌 - 字符逐个从左滑入 */
+.epilogue-hero {
+  position: relative;
+}
+
+.epilogue-hero .hero-text {
+  font-family: var(--font-serif);
+  font-size: clamp(4rem, 12vw, 8rem);
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: flex;
+  gap: 0.05em;
+  color: #E8E8EA;
+}
+
+.epilogue-hero .char {
+  display: inline-block;
+  transform: translateX(-50px);
+  opacity: 0;
+  transition:
+    transform 0.8s var(--easing-smooth),
+    opacity 0.8s var(--easing-smooth);
+}
+
+/* 每个字符依次延迟 */
+.epilogue-hero.revealed .char:nth-child(1) { transition-delay: 0.1s; }
+.epilogue-hero.revealed .char:nth-child(2) { transition-delay: 0.15s; }
+.epilogue-hero.revealed .char:nth-child(3) { transition-delay: 0.2s; }
+.epilogue-hero.revealed .char:nth-child(4) { transition-delay: 0.25s; }
+.epilogue-hero.revealed .char:nth-child(5) { transition-delay: 0.3s; }
+.epilogue-hero.revealed .char:nth-child(6) { transition-delay: 0.35s; }
+.epilogue-hero.revealed .char:nth-child(7) { transition-delay: 0.4s; }
+
+.epilogue-hero.revealed .char {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* 引用文字区域 */
+.epilogue-quote {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  opacity: 0;
+  transform: translateX(-30px);
+  transition:
+    opacity 1s var(--easing-smooth) 0.5s,
+    transform 1s var(--easing-smooth) 0.5s;
+}
+
+.epilogue-quote.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.quote-line {
+  font-family: var(--font-serif);
+  font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: 0.02em;
+  color: rgba(196, 192, 188, 0.85);
+  max-width: 400px;
+  line-height: 1.5;
+}
+
+.quote-author {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #6A6A6C;
+}
+
+/* 底部信息 - 逐行升起 */
+.epilogue-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.8s var(--easing-smooth) 0.8s,
+    transform 0.8s var(--easing-smooth) 0.8s;
+}
+
+.epilogue-footer.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.footer-line {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(196, 192, 188, 0.4),
     transparent
   );
 }
 
-.epilogue-end .vertical-line.top {
-  top: -45px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.epilogue-end .vertical-line.bottom {
-  bottom: -45px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.epilogue-end .end-outline {
+.footer-text {
   font-family: var(--font-serif);
-  font-size: clamp(3.5rem, 12vw, 7rem);
+  font-size: 0.9rem;
   font-weight: 300;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(196, 192, 188, 0.3);
-  transition: opacity 1.5s var(--easing-smooth);
+  font-style: italic;
+  letter-spacing: 0.05em;
+  color: #6A6A6C;
 }
 
-.epilogue-end .end-solid {
+/* 右侧年份 - 从上滑入 */
+.epilogue-year {
   position: absolute;
-  font-family: var(--font-serif);
-  font-size: clamp(3.5rem, 12vw, 7rem);
-  font-weight: 300;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  background: linear-gradient(
-    180deg,
-    #E8E8EA 0%,
-    #C4C0BC 50%,
-    #8B8B8D 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  opacity: 0;
-  transition: opacity 1.5s var(--easing-smooth);
-}
-
-.epilogue-end.revealed .end-outline {
-  opacity: 0;
-}
-
-.epilogue-end.revealed .end-solid {
-  opacity: 1;
-}
-
-/* 底部制作信息 */
-.epilogue-credits {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.6rem;
-}
-
-.epilogue-credits .credit-line {
-  font-family: var(--font-sans);
-  font-size: 0.55rem;
-  font-weight: 400;
-  letter-spacing: 0.35em;
-  text-transform: uppercase;
-  color: #5A5A5C;
-}
-
-.epilogue-credits .credit-line.small {
-  font-size: 0.45rem;
-  letter-spacing: 0.25em;
-  color: #4A4A4C;
-  margin-top: 1rem;
-}
-
-/* 章节索引导航 */
-.chapter-index {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
-  margin-top: 8vh;
-  padding: 0 2rem;
-}
-
-.chapter-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.6rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.5rem;
-  transition: opacity 0.3s ease;
-  opacity: 0.35;
-  position: relative;
-}
-
-.chapter-item:hover {
-  opacity: 0.8;
-}
-
-.chapter-item.active {
-  opacity: 1;
-}
-
-.chapter-label {
-  font-family: var(--font-sans);
-  font-size: 0.5rem;
-  font-weight: 400;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: #C4C0BC;
-  transition: color 0.3s ease;
-}
-
-.chapter-item:hover .chapter-label {
-  color: #E8E8EA;
-}
-
-.chapter-dot {
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: #4A4A4C;
-  transition: all 0.3s ease;
-}
-
-.chapter-item.active .chapter-dot {
-  background: #C4C0BC;
-  box-shadow: 0 0 8px rgba(196, 192, 188, 0.4);
-}
-
-.chapter-item:hover .chapter-dot {
-  background: #6A6A6C;
-}
-
-/* 章节项之间的分隔线 */
-.chapter-item:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  right: -0.75rem;
+  right: 6vw;
   top: 50%;
-  transform: translateY(-50%);
-  width: 12px;
-  height: 1px;
-  background: rgba(74, 74, 76, 0.3);
+  transform: translateY(-50%) translateX(50px);
+  opacity: 0;
+  transition:
+    transform 1s var(--easing-smooth) 1s,
+    opacity 1s var(--easing-smooth) 1s;
 }
 
-/* 移除顶部返回暗示 */
-.epilogue-hint {
-  display: none;
+.epilogue-year.revealed {
+  transform: translateY(-50%) translateX(0);
+  opacity: 1;
+}
+
+.epilogue-year span {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 300;
+  letter-spacing: 0.4em;
+  color: #5A5A5C;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
 }
 
 /* ============================================

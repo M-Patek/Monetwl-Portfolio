@@ -1,67 +1,47 @@
-import { RevealText } from '../effects/RevealText';
-
 interface Props {
   isVisible: boolean;
   isRevealed: boolean;
-  currentIndex?: number;
 }
 
-const chapters = [
-  { index: 0, label: 'Prologue' },
-  { index: 1, label: 'Diurne' },
-  { index: 2, label: 'Interlude' },
-  { index: 3, label: 'Nocturne' },
-  { index: 4, label: 'Epilogue' },
-];
-
-export function EpiloguePage({ isVisible, isRevealed, currentIndex = 4 }: Props) {
-  const handleNavigate = (index: number) => {
-    const section = document.querySelector(`[data-index="${index}"]`);
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
+export function EpiloguePage({ isRevealed }: Props) {
   return (
     <section data-index={4} className="poster-section epilogue is-visible">
       <div className="epilogue-gradient" />
       <div className="grain-overlay" />
 
-      <div className="content-layer center">
-        {/* 中央大文字 - 封印式设计 */}
-        <div className={`epilogue-end ${isRevealed ? 'revealed' : ''}`}>
-          <div className="vertical-line top" />
-          <span className="end-outline">END</span>
-          <span className="end-solid">END</span>
-          <div className="vertical-line bottom" />
+      {/* 左侧竖条装饰 - 随滚动展开 */}
+      <div className={`epilogue-accent ${isRevealed ? 'revealed' : ''}`} />
+
+      <div className="content-layer epilogue-layer">
+        {/* 主品牌 - 从左到右分层显现 */}
+        <div className={`epilogue-hero ${isRevealed ? 'revealed' : ''}`}>
+          <h1 className="hero-text">
+            <span className="char">M</span>
+            <span className="char">O</span>
+            <span className="char">N</span>
+            <span className="char">E</span>
+            <span className="char">T</span>
+            <span className="char">W</span>
+            <span className="char">L</span>
+          </h1>
         </div>
 
-        {/* 底部制作信息 */}
-        <div className="epilogue-credits">
-          <RevealText delay={0.2} isVisible={isVisible} className="credit-line">
-            A MONETWL PROJECT
-          </RevealText>
-          <RevealText delay={0.3} isVisible={isVisible} className="credit-line">
-            Photography & Editorial Design
-          </RevealText>
-          <RevealText delay={0.4} isVisible={isVisible} className="credit-line">
-            MMXXVI
-          </RevealText>
+        {/* 引用文字 */}
+        <div className={`epilogue-quote ${isRevealed ? 'revealed' : ''}`}>
+          <p className="quote-line">Design is thinking made visual</p>
+          <p className="quote-author">— Saul Bass</p>
         </div>
 
-        {/* 章节索引导航 */}
-        <nav className="chapter-index">
-          {chapters.map((chapter) => (
-            <button
-              key={chapter.index}
-              className={`chapter-item ${currentIndex === chapter.index ? 'active' : ''}`}
-              onClick={() => handleNavigate(chapter.index)}
-            >
-              <span className="chapter-label">{chapter.label}</span>
-              <span className="chapter-dot" />
-            </button>
-          ))}
-        </nav>
+        {/* 底部信息 */}
+        <div className={`epilogue-footer ${isRevealed ? 'revealed' : ''}`}>
+          <div className="footer-line" />
+          <p className="footer-text">Thank you for viewing</p>
+        </div>
+      </div>
+
+      {/* 右侧年份 */}
+      <div className={`epilogue-year ${isRevealed ? 'revealed' : ''}`}>
+        <span>MMXXVI</span>
       </div>
     </section>
   );
