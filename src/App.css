@@ -105,6 +105,8 @@ body {
   overflow: hidden;
   display: flex;
   align-items: center;
+  /* 渲染隔离：告诉浏览器这个元素是独立的绘制层 */
+  contain: layout style paint;
 }
 
 /* 视差背景层 - 保持原比例完整显示 */
@@ -116,6 +118,8 @@ body {
   background-repeat: no-repeat;
   will-change: transform;
   filter: contrast(1.05) saturate(1.02);
+  /* 视差效果由 CSS 变量驱动，值由 App 组件计算并绑定到 section */
+  transform: translateY(var(--parallax-offset, 0));
 }
 
 /* 渐变遮罩 - 左侧深 */

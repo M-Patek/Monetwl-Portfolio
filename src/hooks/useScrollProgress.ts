@@ -24,15 +24,10 @@ export function useScrollProgress(posters: Poster[]): ScrollProgressResult {
   const [activeIndex, setActiveIndex] = useState(0);
   const [visibleSections, setVisibleSections] = useState<Set<number>>(new Set());
 
-  const calculateIndex = useCallback((scrollY: number) => {
-    const windowHeight = window.innerHeight;
-    const index = Math.round(scrollY / windowHeight);
-    return Math.max(0, Math.min(posters.length - 1, index));
-  }, [posters.length]);
-
   // 滚动监听 + 保存位置
   useEffect(() => {
     let rafId: number | null = null;
+    let lastProgress = 0;
 
     const onScroll = () => {
       const scrollY = window.scrollY;
@@ -45,14 +40,24 @@ export function useScrollProgress(posters: Poster[]): ScrollProgressResult {
         }
       }
 
+      // 使用 Raf 节流，减少计算频率
       if (rafId) return;
       rafId = requestAnimationFrame(() => {
         const windowHeight = window.innerHeight;
         const docHeight = document.documentElement.scrollHeight;
         const maxScroll = Math.max(0, docHeight - windowHeight);
 
-        setProgress(maxScroll > 0 ? scrollY / maxScroll : 0);
-        setActiveIndex(calculateIndex(scrollY));
+        const newProgress = maxScroll > 0 ? scrollY / maxScroll : 0;
+        const newIndex = Math.max(0, Math.min(posters.length - 1, Math.round(scrollY / windowHeight)));
+
+        // 只在进度变化超过 0.5% 或章节切换时更新 React state，减少重渲染
+        const progressChanged = Math.abs(newProgress - lastProgress) > 0.005;
+
+        if (progressChanged || newIndex !== activeIndex) {
+          setProgress(newProgress);
+          setActiveIndex(newIndex);
+          lastProgress = newProgress;
+        }
 
         rafId = null;
       });
@@ -64,7 +69,7 @@ export function useScrollProgress(posters: Poster[]): ScrollProgressResult {
       window.removeEventListener('scroll', onScroll);
       if (rafId) cancelAnimationFrame(rafId);
     };
-  }, [calculateIndex]);
+  }, [activeIndex, posters.length]);
 
   // 恢复滚动位置 + 激活保存标志
   useEffect(() => {

@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import type { RevealAnimationProps } from '../../types';
 
 // 生成随机微浮动动画参数
@@ -14,7 +15,8 @@ export function RevealText({
   isVisible,
   className = ''
 }: RevealAnimationProps) {
-  const float = getRandomFloat();
+  // 缓存随机动画参数，避免每次渲染重新生成
+  const float = useMemo(() => getRandomFloat(), []);
 
   return (
     <div

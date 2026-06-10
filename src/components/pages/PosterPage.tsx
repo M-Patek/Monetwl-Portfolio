@@ -1,27 +1,47 @@
+import { useMemo } from 'react';
 import type { ImagePoster } from '../../types';
-import { RevealText } from '../effects/RevealText';
 
 interface Props {
   poster: ImagePoster;
   index: number;
   isVisible: boolean;
-  parallaxOffset: number;
+  parallaxStyle?: React.CSSProperties;
 }
 
-export function PosterPage({ poster, index, isVisible, parallaxOffset }: Props) {
+export function PosterPage({ poster, index, isVisible, parallaxStyle }: Props) {
   const { typography, labels, theme, textPosition, image } = poster;
 
-  const overlayGradient = textPosition === 'left'
-    ? `linear-gradient(to right,${theme.bg}f0 0%,${theme.bg}a0 30%,${theme.bg}40 50%,transparent 70%)`
-    : `linear-gradient(to left,${theme.bg}f0 0%,${theme.bg}a0 30%,${theme.bg}40 50%,transparent 70%)`;
+  // 缓存渐变计算
+  const gradient = useMemo(() => {
+    if (textPosition === 'left') {
+      return `linear-gradient(to right,${theme.bg}f0 0%,${theme.bg}a0 30%,${theme.bg}40 50%,transparent 70%)`;
+    }
+    return `linear-gradient(to left,${theme.bg}f0 0%,${theme.bg}a0 30%,${theme.bg}40 50%,transparent 70%)`;
+  }, [textPosition, theme.bg]);
+
+  // 缓存遮罩方向
+  const maskDirection = useMemo(() => {
+    return {
+      maskImage: textPosition === 'left'
+        ? 'linear-gradient(to right, black 30%, transparent 100%)'
+        : 'linear-gradient(to left, black 30%, transparent 100%)',
+      positionSide: textPosition === 'left' ? 'left' as const : 'right' as const
+    };
+  }, [textPosition]);
+
+  const overlayGradient = gradient;
 
   return (
-    <section data-index={index} className={`poster-section is-visible poster-${textPosition}`}>
+    <section
+      data-index={index}
+      className={`poster-section is-visible poster-${textPosition}`}
+      style={parallaxStyle}
+    >
+      {/* 视差背景 - 使用 CSS 变量驱动 */}
       <div
         className="parallax-bg"
         style={{
           backgroundImage: `url(${image})`,
-          transform: `translateY(${parallaxOffset * 0.2}px)`
         }}
       />
       <div className="section-overlay" style={{ background: overlayGradient }} />
@@ -32,57 +52,55 @@ export function PosterPage({ poster, index, isVisible, parallaxOffset }: Props) 
           position: 'absolute',
           top: '50%',
           transform: 'translateY(-50%)',
-          [textPosition === 'left' ? 'left' : 'right']: '0',
+          [maskDirection.positionSide]: '0',
           width: '45vw',
           height: '70vh',
-          backdropFilter: 'blur(8px)',
-          WebkitBackdropFilter: 'blur(8px)',
-          maskImage: textPosition === 'left'
-            ? 'linear-gradient(to right, black 30%, transparent 100%)'
-            : 'linear-gradient(to left, black 30%, transparent 100%)',
-          WebkitMaskImage: textPosition === 'left'
-            ? 'linear-gradient(to right, black 30%, transparent 100%)'
-            : 'linear-gradient(to left, black 30%, transparent 100%)',
+          backdropFilter: 'blur(4px)',
+          WebkitBackdropFilter: 'blur(4px)',
+          maskImage: maskDirection.maskImage,
+          WebkitMaskImage: maskDirection.maskImage,
           pointerEvents: 'none',
           zIndex: 5
         }}
       />
       <div className="grain-overlay" />
       <div className={`content-layer ${textPosition}`}>
-        <RevealText delay={0} isVisible={isVisible} className="season-label">
-          <span>{labels.season}</span>
-          <span className="separator">—</span>
-          <span>{labels.year}</span>
-        </RevealText>
-
-        <div className="title-group">
-          <RevealText delay={0.15} isVisible={isVisible} className="subtitle">
+        {/* 标题组 - 使用 CSS 动画而非 JS 计算 */}
+        <div
+          className={`title-group ${isVisible ? 'revealed' : ''}`}
+          data-visible={isVisible}
+        >
+          <span className="season-label" style={{ transitionDelay: '0ms' }}>
+            <span>{labels.season}</span>
+            <span className="separator">—</span>
+            <span>{labels.year}</span>
+          </span>
+          <span className="subtitle" style={{ transitionDelay: '150ms' }}>
             {typography.subtitle}
-          </RevealText>
+          </span>
           <h1
-            className={`reveal-item main-title ${isVisible ? 'revealed' : ''}`}
+            className="main-title"
             style={{
-              transitionDelay: '0.3s',
+              transitionDelay: '300ms',
               background: `linear-gradient(180deg,${theme.accentSecondary} 0%,${theme.accent} 50%,${theme.accentSecondary} 100%)`
             }}
           >
             {typography.title}
           </h1>
-          <RevealText delay={0.45} isVisible={isVisible} className="accent-line">
+          <div className="accent-line" style={{ transitionDelay: '450ms' }}>
             <div style={{ background: `linear-gradient(90deg,${theme.accent},transparent)` }} />
-          </RevealText>
-          <RevealText delay={0.6} isVisible={isVisible} className="description">
+          </div>
+          <p className="description">
             {typography.description}
-          </RevealText>
+          </p>
+          <div className="credits" style={{ transitionDelay: '750ms' }}>
+            <span>Photography</span>
+            <span className="dot" style={{ backgroundColor: theme.accent }} />
+            <span>Fashion Editorial</span>
+            <span className="dot" style={{ backgroundColor: theme.accent }} />
+            <span>MONETWL</span>
+          </div>
         </div>
-
-        <RevealText delay={0.75} isVisible={isVisible} className="credits">
-          <span>Photography</span>
-          <span className="dot" style={{ backgroundColor: theme.accent }} />
-          <span>Fashion Editorial</span>
-          <span className="dot" style={{ backgroundColor: theme.accent }} />
-          <span>MONETWL</span>
-        </RevealText>
       </div>
     </section>
   );

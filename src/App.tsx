@@ -17,8 +17,9 @@ function App() {
   const displayPage = useDisplayPageIndex(activeIndex);
   const imagePosters = posters.filter(p => p.type === 'image');
 
-  const getParallaxOffset = (index: number) =>
-    (progress - index / posters.length) * 100;
+  const getParallaxCSS = (index: number) => ({
+    '--parallax-offset': `${(progress - index / posters.length) * 20}px`
+  } as React.CSSProperties);
 
   return (
     <div
@@ -44,7 +45,7 @@ function App() {
         poster={posters[1] as any}
         index={1}
         isVisible={visibleSections.has(1)}
-        parallaxOffset={getParallaxOffset(1)}
+        parallaxStyle={getParallaxCSS(1)}
       />
       <CornerDecoration showIssue issueNumber={1} />
 
@@ -59,7 +60,7 @@ function App() {
         poster={posters[3] as any}
         index={3}
         isVisible={visibleSections.has(3)}
-        parallaxOffset={getParallaxOffset(3)}
+        parallaxStyle={getParallaxCSS(3)}
       />
       <CornerDecoration showIssue issueNumber={2} />
 
