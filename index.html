@@ -11,7 +11,11 @@
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
 
-      /* 防止 FOUC (Flash of Unstyled Content) 导致的跳动 */
+      /* 防止 FOUC (Flash of Unstyled Content) 导致的白屏闪烁 */
+      html, body {
+        background: #0a0a0a !important;
+      }
+
       html {
         width: 100%;
         scroll-behavior: auto;
@@ -31,32 +35,13 @@
 
       #root {
         width: 100%;
-        /* 初始隐藏防止渲染闪烁，JS 加载后显示 */
-        opacity: 0;
-        transition: opacity 0.3s ease;
-      }
-
-      #root.ready {
-        opacity: 1;
       }
     </style>
 
     <!--
-      防止 FOUC（页面渲染闪烁）：先隐藏 #root，
-      待 React 挂载后由 useScrollProgress hook 恢复滚动位置并显示内容
+      防闪烁：立即设置深色背景，确保浏览器默认白屏不会闪现。
+      无需隐藏 #root，因为 React 会很快接管渲染。
     -->
-    <script>
-      (function() {
-        const showRoot = () => {
-          const root = document.getElementById('root');
-          if (root) root.classList.add('ready');
-        };
-        // 主要时机：load 事件后稍等 React 渲染
-        window.addEventListener('load', () => setTimeout(showRoot, 100));
-        // 兜底：避免网络异常时页面永远不显示
-        setTimeout(showRoot, 3000);
-      })();
-    </script>
   </head>
   <body>
     <div id="root"></div>
