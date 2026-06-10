@@ -12,7 +12,7 @@ export function PosterPage({ poster, index, isVisible, parallaxStyle }: Props) {
   const { typography, labels, theme, textPosition, image } = poster;
 
   // 缓存渐变计算
-  const gradient = useMemo(() => {
+  const overlayGradient = useMemo(() => {
     if (textPosition === 'left') {
       return `linear-gradient(to right,${theme.bg}f0 0%,${theme.bg}a0 30%,${theme.bg}40 50%,transparent 70%)`;
     }
@@ -20,16 +20,15 @@ export function PosterPage({ poster, index, isVisible, parallaxStyle }: Props) {
   }, [textPosition, theme.bg]);
 
   // 缓存遮罩方向
-  const maskDirection = useMemo(() => {
-    return {
-      maskImage: textPosition === 'left'
-        ? 'linear-gradient(to right, black 30%, transparent 100%)'
-        : 'linear-gradient(to left, black 30%, transparent 100%)',
-      positionSide: textPosition === 'left' ? 'left' as const : 'right' as const
-    };
-  }, [textPosition]);
+  const maskDirection = useMemo(() => ({
+    maskImage: textPosition === 'left'
+      ? 'linear-gradient(to right, black 30%, transparent 100%)'
+      : 'linear-gradient(to left, black 30%, transparent 100%)',
+    positionSide: textPosition === 'left' ? 'left' as const : 'right' as const
+  }), [textPosition]);
 
-  const overlayGradient = gradient;
+  const revealClass = (baseDelay: number) =>
+    `reveal-item ${isVisible ? 'revealed' : ''}`;
 
   return (
     <section
@@ -40,9 +39,7 @@ export function PosterPage({ poster, index, isVisible, parallaxStyle }: Props) {
       {/* 视差背景 - 使用 CSS 变量驱动 */}
       <div
         className="parallax-bg"
-        style={{
-          backgroundImage: `url(${image})`,
-        }}
+        style={{ backgroundImage: `url(${image})` }}
       />
       <div className="section-overlay" style={{ background: overlayGradient }} />
       <div
@@ -65,21 +62,22 @@ export function PosterPage({ poster, index, isVisible, parallaxStyle }: Props) {
       />
       <div className="grain-overlay" />
       <div className={`content-layer ${textPosition}`}>
-        {/* 标题组 - 使用 CSS 动画而非 JS 计算 */}
-        <div
-          className={`title-group ${isVisible ? 'revealed' : ''}`}
-          data-visible={isVisible}
-        >
-          <span className="season-label" style={{ transitionDelay: '0ms' }}>
-            <span>{labels.season}</span>
-            <span className="separator">—</span>
-            <span>{labels.year}</span>
+        {/* 标题组 */}
+        <div className="title-group">
+          <span className={revealClass(0)} style={{ transitionDelay: '0ms' }}>
+            <span className="season-label">
+              <span>{labels.season}</span>
+              <span className="separator">—</span>
+              <span>{labels.year}</span>
+            </span>
           </span>
-          <span className="subtitle" style={{ transitionDelay: '150ms' }}>
-            {typography.subtitle}
+
+          <span className={revealClass(150)} style={{ transitionDelay: '150ms' }}>
+            <span className="subtitle">{typography.subtitle}</span>
           </span>
+
           <h1
-            className="main-title"
+            className={`reveal-item main-title ${isVisible ? 'revealed' : ''}`}
             style={{
               transitionDelay: '300ms',
               background: `linear-gradient(180deg,${theme.accentSecondary} 0%,${theme.accent} 50%,${theme.accentSecondary} 100%)`
@@ -87,19 +85,26 @@ export function PosterPage({ poster, index, isVisible, parallaxStyle }: Props) {
           >
             {typography.title}
           </h1>
-          <div className="accent-line" style={{ transitionDelay: '450ms' }}>
-            <div style={{ background: `linear-gradient(90deg,${theme.accent},transparent)` }} />
-          </div>
-          <p className="description">
-            {typography.description}
-          </p>
-          <div className="credits" style={{ transitionDelay: '750ms' }}>
-            <span>Photography</span>
-            <span className="dot" style={{ backgroundColor: theme.accent }} />
-            <span>Fashion Editorial</span>
-            <span className="dot" style={{ backgroundColor: theme.accent }} />
-            <span>MONETWL</span>
-          </div>
+
+          <span className={revealClass(450)} style={{ transitionDelay: '450ms' }}>
+            <span className="accent-line">
+              <div style={{ background: `linear-gradient(90deg,${theme.accent},transparent)` }} />
+            </span>
+          </span>
+
+          <span className={revealClass(600)} style={{ transitionDelay: '600ms' }}>
+            <p className="description">{typography.description}</p>
+          </span>
+
+          <span className={revealClass(750)} style={{ transitionDelay: '750ms' }}>
+            <div className="credits">
+              <span>Photography</span>
+              <span className="dot" style={{ backgroundColor: theme.accent }} />
+              <span>Fashion Editorial</span>
+              <span className="dot" style={{ backgroundColor: theme.accent }} />
+              <span>MONETWL</span>
+            </div>
+          </span>
         </div>
       </div>
     </section>
