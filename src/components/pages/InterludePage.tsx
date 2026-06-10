@@ -1,5 +1,4 @@
 import type { InterludePoster } from '../../types';
-import { RevealText } from '../effects/RevealText';
 
 interface Props {
   poster: InterludePoster;
@@ -14,34 +13,52 @@ export function InterludePage({ poster: _poster, isVisible }: Props) {
 
       <div className="content-layer center">
         <div className="interlude-content">
-          {/* 上部 - The Day Fades */}
+          {/* 上部 - The Day Fades（从左到右渐显） */}
           <div className="interlude-stanza">
-            <RevealText delay={0.1} isVisible={isVisible} className="interlude-label light">
+            <span
+              className={`interlude-label light reveal-l2r ${isVisible ? 'revealed' : ''}`}
+              style={{ transitionDelay: '0.2s' }}
+            >
               The Day Fades
-            </RevealText>
-            <RevealText delay={0.15} isVisible={isVisible} className="interlude-divider">
+            </span>
+            <div
+              className={`interlude-divider reveal-l2r ${isVisible ? 'revealed' : ''}`}
+              style={{ transitionDelay: '0.3s' }}
+            >
               <div />
-            </RevealText>
+            </div>
           </div>
 
-          {/* 中部 - Between Shadows & Light */}
+          {/* 中部 - Between Shadows & Light（从左到右渐显） */}
           <div className="interlude-stanza center-piece">
-            <RevealText delay={0.3} isVisible={isVisible} className="interlude-title line2">
+            <h2
+              className={`interlude-title line2 reveal-l2r ${isVisible ? 'revealed' : ''}`}
+              style={{ transitionDelay: '0.5s' }}
+            >
               Between Shadows
-            </RevealText>
-            <RevealText delay={0.4} isVisible={isVisible} className="interlude-title line2">
+            </h2>
+            <h2
+              className={`interlude-title line2 reveal-l2r ${isVisible ? 'revealed' : ''}`}
+              style={{ transitionDelay: '0.9s' }}
+            >
               & Light
-            </RevealText>
+            </h2>
           </div>
 
-          {/* 下部 - Night Awaits */}
+          {/* 下部 - Night Awaits（从左到右渐显） */}
           <div className="interlude-stanza">
-            <RevealText delay={0.15} isVisible={isVisible} className="interlude-divider">
+            <div
+              className={`interlude-divider reveal-l2r ${isVisible ? 'revealed' : ''}`}
+              style={{ transitionDelay: '0.3s' }}
+            >
               <div />
-            </RevealText>
-            <RevealText delay={0.7} isVisible={isVisible} className="interlude-label dark">
+            </div>
+            <span
+              className={`interlude-label dark reveal-l2r ${isVisible ? 'revealed' : ''}`}
+              style={{ transitionDelay: '1.3s' }}
+            >
               Night Awaits
-            </RevealText>
+            </span>
           </div>
         </div>
       </div>

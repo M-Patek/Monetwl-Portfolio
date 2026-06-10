@@ -56,27 +56,27 @@ export function PosterPage({ poster, index, isVisible, parallaxOffset }: Props) 
         </RevealText>
 
         <div className="title-group">
-          <RevealText delay={0.1} isVisible={isVisible} className="subtitle">
+          <RevealText delay={0.15} isVisible={isVisible} className="subtitle">
             {typography.subtitle}
           </RevealText>
           <h1
             className={`reveal-item main-title ${isVisible ? 'revealed' : ''}`}
             style={{
-              transitionDelay: '0.2s',
+              transitionDelay: '0.3s',
               background: `linear-gradient(180deg,${theme.accentSecondary} 0%,${theme.accent} 50%,${theme.accentSecondary} 100%)`
             }}
           >
             {typography.title}
           </h1>
-          <RevealText delay={0.3} isVisible={isVisible} className="accent-line">
+          <RevealText delay={0.45} isVisible={isVisible} className="accent-line">
             <div style={{ background: `linear-gradient(90deg,${theme.accent},transparent)` }} />
           </RevealText>
-          <RevealText delay={0.4} isVisible={isVisible} className="description">
+          <RevealText delay={0.6} isVisible={isVisible} className="description">
             {typography.description}
           </RevealText>
         </div>
 
-        <RevealText delay={0.5} isVisible={isVisible} className="credits">
+        <RevealText delay={0.75} isVisible={isVisible} className="credits">
           <span>Photography</span>
           <span className="dot" style={{ backgroundColor: theme.accent }} />
           <span>Fashion Editorial</span>

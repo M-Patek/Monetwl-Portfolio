@@ -8,6 +8,7 @@
   --font-sans: 'Inter', -apple-system, sans-serif;
   --easing-smooth: cubic-bezier(0.16, 1, 0.3, 1);
   --easing-reveal: cubic-bezier(0.22, 1, 0.36, 1);
+  --easing-lazy: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * {
@@ -16,21 +17,15 @@
   box-sizing: border-box;
 }
 
+/* 滚动行为：不干预浏览器原生恢复 */
 html {
-  scroll-behavior: smooth;
-  overflow-x: hidden;
-  overflow-y: auto;
-  height: 100%;
+  scroll-behavior: auto;
 }
 
 body {
   font-family: var(--font-serif);
   background: #0a0a0a;
   color: #fafafa;
-  overflow-x: hidden;
-  overflow-y: auto;
-  min-height: 100%;
-  height: auto;
 }
 
 /* ============================================
@@ -199,7 +194,31 @@ body {
    ============================================ */
 
 .prologue {
-  background: #FAF7F2;
+  background: #F5F0E8;
+}
+
+/* 慵懒柔光 - 右上角暖色光晕 */
+.prologue::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  right: -10%;
+  width: 60vw;
+  height: 60vh;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(212, 180, 140, 0.12) 0%,
+    rgba(212, 180, 140, 0.05) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  filter: blur(60px);
+  animation: lazy-glow 12s ease-in-out infinite;
+}
+
+@keyframes lazy-glow {
+  0%, 100% { opacity: 0.8; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
 }
 
 .prologue-gradient {
@@ -209,7 +228,7 @@ body {
     radial-gradient(
       ellipse at center 45%,
       rgba(245, 242, 238, 0) 0%,
-      rgba(232, 228, 222, 0.5) 100%
+      rgba(232, 228, 222, 0.3) 100%
     );
   pointer-events: none;
 }
@@ -240,8 +259,8 @@ body {
   font-family: var(--font-serif);
   font-size: clamp(4rem, 12vw, 9rem);
   font-weight: 400;
-  line-height: 0.9;
-  letter-spacing: -0.02em;
+  line-height: 1;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   margin: 0;
   color: #1a1a1a;
@@ -256,6 +275,21 @@ body {
   text-transform: uppercase;
   color: #5a5652;
   margin-top: 0.5rem;
+}
+
+/* 顶部装饰线 - 与下方横线呼应 */
+.prologue-top-line {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(26, 26, 26, 0.2) 20%,
+    rgba(26, 26, 26, 0.35) 50%,
+    rgba(26, 26, 26, 0.2) 80%,
+    transparent 100%
+  );
+  margin: 0.6rem auto 0.4rem;
 }
 
 .prologue-line {
@@ -320,7 +354,7 @@ body {
    ============================================ */
 
 .interlude {
-  background: #1A1A1D;
+  background: #1C1B18;
 }
 
 /* 极微弱的环境光晕 - 仅在边缘 */
@@ -457,28 +491,13 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  filter: drop-shadow(0 0 30px rgba(180, 150, 120, 0.15));
-  animation: text-breathe 6s ease-in-out infinite;
 }
 
 @keyframes text-breathe {
   0%, 100% {
-    opacity: 0.85;
     transform: translateY(0);
   }
   50% {
-    opacity: 1;
-    transform: translateY(-2px);
-  }
-}
-
-@keyframes text-breathe {
-  0%, 100% {
-    opacity: 0.85;
-    transform: translateY(0);
-  }
-  50% {
-    opacity: 1;
     transform: translateY(-2px);
   }
 }
@@ -514,7 +533,7 @@ body {
    ============================================ */
 
 .epilogue {
-  background: #141416;
+  background: #161614;
   overflow: hidden;
 }
 
@@ -597,14 +616,14 @@ body {
     opacity 0.8s var(--easing-smooth);
 }
 
-/* 每个字符依次延迟 */
-.epilogue-hero.revealed .char:nth-child(1) { transition-delay: 0.1s; }
-.epilogue-hero.revealed .char:nth-child(2) { transition-delay: 0.15s; }
-.epilogue-hero.revealed .char:nth-child(3) { transition-delay: 0.2s; }
-.epilogue-hero.revealed .char:nth-child(4) { transition-delay: 0.25s; }
-.epilogue-hero.revealed .char:nth-child(5) { transition-delay: 0.3s; }
-.epilogue-hero.revealed .char:nth-child(6) { transition-delay: 0.35s; }
-.epilogue-hero.revealed .char:nth-child(7) { transition-delay: 0.4s; }
+/* 每个字符依次延迟 - 放慢 */
+.epilogue-hero.revealed .char:nth-child(1) { transition-delay: 0.15s; }
+.epilogue-hero.revealed .char:nth-child(2) { transition-delay: 0.25s; }
+.epilogue-hero.revealed .char:nth-child(3) { transition-delay: 0.35s; }
+.epilogue-hero.revealed .char:nth-child(4) { transition-delay: 0.45s; }
+.epilogue-hero.revealed .char:nth-child(5) { transition-delay: 0.55s; }
+.epilogue-hero.revealed .char:nth-child(6) { transition-delay: 0.65s; }
+.epilogue-hero.revealed .char:nth-child(7) { transition-delay: 0.75s; }
 
 .epilogue-hero.revealed .char {
   transform: translateX(0);
@@ -710,6 +729,213 @@ body {
   color: #5A5A5C;
   writing-mode: vertical-rl;
   text-orientation: mixed;
+}
+
+/* ============================================
+   EPILOGUE 增强 - 慵懒仪式感
+   ============================================ */
+
+/* 慵懒光点 - 缓慢漂移 */
+.epilogue-dust {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: rgba(212, 168, 83, 0.3);
+  border-radius: 50%;
+  left: 70%;
+  top: 40%;
+  filter: blur(1px);
+  animation: dust-drift 20s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes dust-drift {
+  0%, 100% {
+    transform: translate(0, 0);
+    opacity: 0.2;
+  }
+  25% {
+    transform: translate(30px, -20px);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translate(60px, 10px);
+    opacity: 0.2;
+  }
+  75% {
+    transform: translate(40px, 30px);
+    opacity: 0.3;
+  }
+}
+
+/* 左侧竖条 - 从中间向上下展开 */
+.epilogue-accent {
+  position: absolute;
+  left: 6vw;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.epilogue-accent .accent-top,
+.epilogue-accent .accent-bottom {
+  width: 2px;
+  height: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(212, 168, 83, 0.4),
+    rgba(196, 192, 188, 0.2),
+    rgba(93, 138, 168, 0.4)
+  );
+  transition: height 1.5s var(--easing-smooth);
+}
+
+.epilogue-accent.revealed {
+  height: 60vh;
+}
+
+.epilogue-accent.revealed .accent-top {
+  height: 30vh;
+}
+
+.epilogue-accent.revealed .accent-bottom {
+  height: 30vh;
+}
+
+/* 顶部 THE END - 镜像呼应 */
+.epilogue-end {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition:
+    opacity 1s var(--easing-smooth) 0.2s,
+    transform 1s var(--easing-smooth) 0.2s;
+}
+
+.epilogue-end.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.epilogue-end .end-text {
+  font-family: var(--font-sans);
+  font-size: 0.55rem;
+  font-weight: 400;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: #6A6A6C;
+}
+
+.epilogue-end .end-line {
+  width: 40px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(196, 192, 188, 0.4),
+    transparent
+  );
+}
+
+/* 时间印记 */
+.epilogue-time {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  opacity: 0;
+  transform: translateX(-20px);
+  transition:
+    opacity 0.8s var(--easing-smooth) 1s,
+    transform 0.8s var(--easing-smooth) 1s;
+}
+
+.epilogue-time.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.epilogue-time .time-label {
+  font-family: var(--font-sans);
+  font-size: 0.5rem;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #5A5A5C;
+}
+
+.epilogue-time .time-value {
+  font-family: var(--font-serif);
+  font-size: 0.8rem;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  color: #8A8A8C;
+}
+
+/* 右侧年份增强 */
+.epilogue-year {
+  position: absolute;
+  right: 6vw;
+  top: 50%;
+  transform: translateY(-50%) translateX(50px);
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  transition:
+    transform 1s var(--easing-smooth) 1s,
+    opacity 1s var(--easing-smooth) 1s;
+}
+
+.epilogue-year.revealed {
+  transform: translateY(-50%) translateX(0);
+  opacity: 1;
+}
+
+.epilogue-year .year-line-top,
+.epilogue-year .year-line-bottom {
+  width: 1px;
+  height: 0;
+  background: rgba(90, 90, 92, 0.3);
+  transition: height 1s var(--easing-smooth) 1.2s;
+}
+
+.epilogue-year.revealed .year-line-top,
+.epilogue-year.revealed .year-line-bottom {
+  height: 60px;
+}
+
+/* 字符独立浮动 - 呼吸感 */
+.epilogue-hero .char {
+  display: inline-block;
+  transform: translateX(-50px);
+  opacity: 0;
+  transition:
+    transform 0.8s var(--easing-smooth),
+    opacity 0.8s var(--easing-smooth);
+  animation: char-float 8s ease-in-out infinite;
+}
+
+@keyframes char-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+/* 增大垂直间距 */
+.epilogue-layer {
+  gap: 4rem;
+}
+
+/* 引用文字更大间距 */
+.epilogue-quote {
+  gap: 1rem;
+  margin: 1rem 0;
 }
 
 /* ============================================
@@ -822,8 +1048,8 @@ body {
   opacity: 0;
   transform: translateY(40px);
   transition:
-    opacity 0.8s var(--easing-reveal),
-    transform 0.8s var(--easing-reveal);
+    opacity 1.2s var(--easing-reveal),
+    transform 1.2s var(--easing-reveal);
 }
 
 .reveal-item.revealed {
@@ -831,19 +1057,79 @@ body {
   transform: translateY(0);
 }
 
-/* 主标题额外动画 - 从下方升起 */
+/* 主标题 - 从内部浮起 */
 .main-title.reveal-item {
   opacity: 0;
-  transform: translateY(60px);
+  transform: translateY(40px) scale(0.92);
+  transform-origin: center bottom;
   transition:
-    opacity 1s var(--easing-reveal),
-    transform 1s var(--easing-reveal),
+    opacity 1.2s var(--easing-reveal),
+    transform 1.2s var(--easing-reveal),
     background 0.8s ease;
 }
 
 .main-title.reveal-item.revealed {
   opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* 过渡页标题 - 渐显 + 微弱浮动 */
+.interlude-title.reveal-item {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 1s var(--easing-reveal),
+    transform 1s var(--easing-reveal);
+}
+
+.interlude-title.reveal-item.revealed {
+  opacity: 1;
   transform: translateY(0);
+  animation: text-breathe 6s ease-in-out infinite 0.5s;
+}
+
+/* 过渡页标题 - 从左到右渐显（clip-path 揭示） */
+.interlude-title.reveal-l2r {
+  clip-path: inset(0 100% 0 0);
+  -webkit-clip-path: inset(0 100% 0 0);
+  transition: clip-path 2s var(--easing-reveal);
+}
+
+.interlude-title.reveal-l2r.revealed {
+  clip-path: inset(0 0 0 0);
+  -webkit-clip-path: inset(0 0 0 0);
+}
+
+/* 过渡页小字标签 - 从左到右渐显（clip-path 揭示） */
+.interlude-label.reveal-l2r {
+  display: inline-block;
+  clip-path: inset(0 100% 0 0);
+  -webkit-clip-path: inset(0 100% 0 0);
+  transition: clip-path 1.8s var(--easing-reveal);
+}
+
+.interlude-label.reveal-l2r.revealed {
+  clip-path: inset(0 0 0 0);
+  -webkit-clip-path: inset(0 0 0 0);
+}
+
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+/* 慵懒微浮动 - 每个元素独立的呼吸感 */
+@keyframes lazy-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(var(--float-y, 2px));
+  }
 }
 
 /* ============================================
@@ -1036,10 +1322,16 @@ body {
   }
 
   .reveal-item,
-  .main-title.reveal-item {
+  .main-title.reveal-item,
+  .interlude-title.reveal-item {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
+  }
+
+  .prologue-brand {
+    background-position: 0 0 !important;
+    animation: none !important;
   }
 
   .scroll-hint {

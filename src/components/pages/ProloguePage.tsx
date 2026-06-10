@@ -34,19 +34,22 @@ export function ProloguePage({ poster, isVisible }: Props) {
 
       <div className="content-layer center">
         <div className="prologue-content">
-          <RevealText delay={0.1} isVisible={isVisible} className="prologue-pretitle">
+          <RevealText delay={0.15} isVisible={isVisible} className="prologue-pretitle">
             {typography.subtitle}
           </RevealText>
-          <RevealText delay={0.2} isVisible={isVisible} className="prologue-brand">
-            {typography.brand}
-          </RevealText>
-          <RevealText delay={0.3} isVisible={isVisible} className="prologue-collection">
-            {typography.collection}
-          </RevealText>
-          <RevealText delay={0.4} isVisible={isVisible} className="prologue-line">
+          <RevealText delay={0.25} isVisible={isVisible} className="prologue-top-line">
             <div />
           </RevealText>
-          <RevealText delay={0.5} isVisible={isVisible} className="prologue-year">
+          <RevealText delay={0.4} isVisible={isVisible} className="prologue-brand">
+            {typography.brand}
+          </RevealText>
+          <RevealText delay={0.6} isVisible={isVisible} className="prologue-collection">
+            {typography.collection}
+          </RevealText>
+          <RevealText delay={0.8} isVisible={isVisible} className="prologue-line">
+            <div />
+          </RevealText>
+          <RevealText delay={1.0} isVisible={isVisible} className="prologue-year">
             {typography.year}
           </RevealText>
         </div>
