@@ -7,20 +7,7 @@
     <title>MONETWL — EDITORIAL</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=block" rel="stylesheet">
-
-    <!--
-      字体加载策略：使用 display=block 防止字体加载期间的闪烁。
-      字体准备好之前显示空白，避免系统字体和 Google Font 之间的切换闪烁。
-    -->
-    <style>
-      /* 字体加载完成前的备用显示 */
-      @font-face {
-        font-family: 'Cormorant Garamond';
-        font-display: block;
-        src: local('Georgia');
-      }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -56,18 +43,8 @@
       无需隐藏 #root，因为 React 会很快接管渲染。
     -->
   </head>
-  <body class="js-loading">
+  <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <script>
-      // 页面加载完成后移除 js-loading 类，启用 reveal 动画
-      window.addEventListener('load', () => {
-        document.body.classList.remove('js-loading');
-      });
-      // 兜底：最多等待 2 秒
-      setTimeout(() => {
-        document.body.classList.remove('js-loading');
-      }, 2000);
-    </script>
   </body>
 </html>

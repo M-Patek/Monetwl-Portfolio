@@ -1056,44 +1056,6 @@ body {
     transform 1.2s var(--easing-reveal);
 }
 
-/* 页面加载完成前，可见的元素直接显示（防止刷新闪烁） */
-.js-loading .reveal-item,
-.js-loading .reveal-item.revealed,
-.js-loading .reveal-l2r,
-.js-loading .reveal-l2r.revealed,
-.js-loading .epilogue-hero,
-.js-loading .epilogue-hero.revealed,
-.js-loading .epilogue-quote,
-.js-loading .epilogue-quote.revealed,
-.js-loading .epilogue-footer,
-.js-loading .epilogue-footer.revealed,
-.js-loading .epilogue-year,
-.js-loading .epilogue-year.revealed,
-.js-loading .epilogue-accent,
-.js-loading .epilogue-accent.revealed,
-.js-loading .epilogue-end,
-.js-loading .epilogue-end.revealed,
-.js-loading .epilogue-time,
-.js-loading .epilogue-time.revealed {
-  opacity: 1;
-  transform: none;
-  clip-path: none;
-  transition: none;
-}
-
-.js-loading .main-title.reveal-item,
-.js-loading .interlude-title.reveal-item {
-  opacity: 1;
-  transform: none;
-  transition: none;
-}
-
-/* 页面加载期间禁用视差效果，防止图片跳动 */
-.js-loading .parallax-bg {
-  transform: none !important;
-  transition: none !important;
-}
-
 .reveal-item.revealed {
   opacity: 1;
   transform: translateY(0);
