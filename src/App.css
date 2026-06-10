@@ -118,8 +118,8 @@ body {
   background-repeat: no-repeat;
   will-change: transform;
   filter: contrast(1.05) saturate(1.02);
-  /* 视差效果由 CSS 变量驱动，值由 App 组件计算并绑定到 section */
-  transform: translateY(var(--parallax-offset, 0));
+  /* 视差效果由 CSS 变量驱动，默认值 0 确保初始位置一致 */
+  transform: translateY(var(--parallax-offset, 0px));
 }
 
 /* 渐变遮罩 - 左侧深 */

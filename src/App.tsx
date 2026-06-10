@@ -17,9 +17,9 @@ function App() {
   const displayPage = useDisplayPageIndex(activeIndex);
   const imagePosters = posters.filter(p => p.type === 'image');
 
-  const getParallaxCSS = (index: number) => ({
+  const getParallaxCSS = (index: number): React.CSSProperties => ({
     '--parallax-offset': `${(progress - index / posters.length) * 20}px`
-  } as React.CSSProperties);
+  });
 
   return (
     <div

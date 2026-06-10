@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { Poster } from '../types';
 
 interface ScrollProgressResult {
@@ -11,11 +11,26 @@ interface ScrollProgressResult {
 const SCROLL_POSITION_KEY = 'monetwl-scroll-y';
 
 /**
+ * 等待所有图片加载完成
+ */
+function waitForImages(): Promise<void> {
+  const images = document.querySelectorAll('img');
+  const imagePromises = Array.from(images).map(img => {
+    if (img.complete) return Promise.resolve();
+    return new Promise<void>((resolve) => {
+      img.addEventListener('load', () => resolve(), { once: true });
+      img.addEventListener('error', () => resolve(), { once: true });
+    });
+  });
+  return Promise.all(imagePromises).then(() => undefined);
+}
+
+/**
  * 滚动进度管理 Hook
  *
  * - 不吸附、不干预滚动
  * - 持久化滚动位置到 sessionStorage
- * - 初始化时恢复之前的位置
+ * - 初始化时恢复之前的位置（等待图片加载完成后）
  */
 export function useScrollProgress(posters: Poster[]): ScrollProgressResult {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -71,7 +86,7 @@ export function useScrollProgress(posters: Poster[]): ScrollProgressResult {
     };
   }, [activeIndex, posters.length]);
 
-  // 恢复滚动位置 + 激活保存标志
+  // 恢复滚动位置 + 激活保存标志（等待图片加载完成）
   useEffect(() => {
     let savedScrollY = 0;
     try {
@@ -81,26 +96,32 @@ export function useScrollProgress(posters: Poster[]): ScrollProgressResult {
       // 忽略
     }
 
-    const startRestore = () => {
+    const doRestore = () => {
       if (savedScrollY > 0) {
-        const tryRestore = () => {
-          window.scrollTo(0, savedScrollY);
-          // 手动派发 scroll 事件，让监听器同步 progress 状态
-          window.dispatchEvent(new Event('scroll'));
-        };
-        requestAnimationFrame(tryRestore);
-        setTimeout(tryRestore, 100);
-        setTimeout(tryRestore, 400);
+        window.scrollTo(0, savedScrollY);
+        // 手动派发 scroll 事件，让监听器同步 progress 状态
+        window.dispatchEvent(new Event('scroll'));
       }
+      // 恢复完成后，延迟激活保存标志
       setTimeout(() => {
         restoreFlagRef.current = true;
-      }, 500);
+      }, 100);
+    };
+
+    const startRestore = async () => {
+      if (savedScrollY > 0) {
+        // 等待图片加载完成，避免高度变化导致的抽搐
+        await waitForImages();
+        doRestore();
+      } else {
+        restoreFlagRef.current = true;
+      }
     };
 
     if (document.readyState === 'complete') {
-      setTimeout(startRestore, 50);
+      startRestore();
     } else {
-      window.addEventListener('load', () => setTimeout(startRestore, 50), { once: true });
+      window.addEventListener('load', startRestore, { once: true });
     }
   }, []);
 
