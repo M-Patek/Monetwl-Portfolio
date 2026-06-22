@@ -27,7 +27,7 @@ export function PosterPage({ poster, index, isVisible, parallaxStyle }: Props) {
     positionSide: textPosition === 'left' ? 'left' as const : 'right' as const
   }), [textPosition]);
 
-  const revealClass = (baseDelay: number) =>
+  const revealClass = (_baseDelay: number) =>
     `reveal-item ${isVisible ? 'revealed' : ''}`;
 
   return (
